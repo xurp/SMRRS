@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource(locations = { "classpath:druid-bean.xml" })
 public class MySpringBootApplication {
 
+	// 访问路径：http://localhost:8081	初始账号密码：admin 123456
 	public static void main(String[] args) {
 		SpringApplication.run(MySpringBootApplication.class, args);
 	}

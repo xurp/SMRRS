@@ -26,7 +26,7 @@
 	3、重写了UsernamePasswordToken 主要是给登入添加属性
 	4、spring boot 中使用 ShiroConfig的方式配置shiro，包括重写的Realm、cache、session等
 	
-缓存组件（shiro）:
+缓存组件（redis）:
 	可以将用户增删改查的数据放入缓存中，提升访问速度，减轻服务器压力。本项目还未实现不同用户的cache同步问题，暂时不建议多用
 	1、引入spring-boot-starter-data-redis jar包之后，容器中保存的是RedisCacheManager
 	2、RedisCacheManager 帮我们创建RedisCache 来作为缓存组件，RedisCache通过操作redis缓存数据
