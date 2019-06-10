@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: com.shanghai.modules.MySpringBootApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.246 s <<< FAILURE! - in com.shanghai.modules.MySpringBootApplicationTests
+initializationError(com.shanghai.modules.MySpringBootApplicationTests)  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.Exception: No runnable methods
+

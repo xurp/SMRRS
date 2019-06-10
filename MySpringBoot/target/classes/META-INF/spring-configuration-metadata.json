@@ -4,7 +4,7 @@
     {
       "sourceType": "com.shanghai.common.config.DruidConfig$Druid",
       "name": "spring.datasource.druid",
-      "sourceMethod": "public com.alibaba.druid.pool.DruidDataSource dataSource(org.springframework.boot.autoconfigure.jdbc.DataSourceProperties) ",
+      "sourceMethod": "dataSource(org.springframework.boot.autoconfigure.jdbc.DataSourceProperties)",
       "type": "com.alibaba.druid.pool.DruidDataSource"
     }
   ],

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.type.Alias;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 * @version: 2018年5月10日 下午5:43:11
 * 菜单实体
 */
+//@Alias("Menu")
 public class Menu implements Serializable{
 
 	/**

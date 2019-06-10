@@ -1,3 +1,8 @@
+resource：
+1、虽然报错，但可以启动（一开始启动说找不到类，然后mvn clean并package了，跳过了test）
+2、在配置里删掉了redis密码，但在RedisJedisConfig里，需要把带密码的构造去掉，直接不用密码
+
+-------作者的介绍---------
 项目架构：
 	框架: Spring Boot 
 	持久层框架 : Mybatis
