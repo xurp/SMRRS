@@ -1,6 +1,25 @@
 resource：
-1、虽然报错，但可以启动（一开始启动说找不到类，然后mvn clean并package了，跳过了test）
-2、在配置里删掉了redis密码，但在RedisJedisConfig里，需要把带密码的构造去掉，直接不用密码
+1. 虽然报错，但可以启动（一开始启动说找不到类，然后mvn clean并package了，跳过了test）
+2. 在配置里删掉了redis密码，但在RedisJedisConfig里，需要把带密码的构造去掉，直接不用密码
+3. static放js、css等文件，templates放ftl文件
+4. druid-bean.xml似乎是Druid提供的Spring和Jdbc的关联监控,主要配置一个方法名正则匹配拦截配置的路径,拦截dao下面的
+5. log4j.properties配置一些东西,logbak-spring.xml也是一个日志框架,配置一些路径,日志级别等
+6. mabatis-config.xml,配置项不少,可能最重要的是mapUnderscoreToCamelCase
+
+后台:
+1. config包. DruidConfig理论上是读取配置文件里的属性,实际上似乎和网上有些东西有出入. FreeMarkerConfig是配置模板引擎Freemarker的,例如全局标签.
+    FtlShiroTagConfig用来把shiro标签写在FreeMarker. RabbitMqConfig除了读取配置文件,还配置了转换器为json(就是发消息的对象,似乎也能自己构造例如stm里的SeckillMessage). 
+    RabbitMqPublisherConfig配置交换机之类的东西(和前一个文件可能能合并). RedisCacheConfig读取了配置里的缓存过期时间,做缓存配置和k-v序列化配置. RedisJedisConfig读配置,把池做出来.
+    WebMvcConfig一般主要配置拦截器和其他springboot配置,这里做了默认路径跳转至login和跨域配置(和x-springboot的WebMvcConfig一样). ShiroConfig比x-springboot的略复杂些,
+          比如remember me 
+    
+
+
+
+
+
+
+
 
 -------作者的介绍---------
 项目架构：

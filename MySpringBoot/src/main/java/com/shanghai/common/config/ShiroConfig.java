@@ -4,8 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
@@ -74,6 +76,7 @@ public class ShiroConfig {
 	 * 
 	 * @return
 	 */
+	// [注]:这里的MyShiroRealm是 extends AuthorizingRealm,用于securityManager()
 	@Bean
 	public MyShiroRealm myShiroRealm() {
 		MyShiroRealm myShiroRealm = new MyShiroRealm();
@@ -95,6 +98,7 @@ public class ShiroConfig {
 	 * @param securityManager
 	 * @return
 	 */
+	// [注]:和x-springboot一样,这里主要是配置不需要权限的路径,比如/sys/login肯定不要
 	@Bean
 	public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
 
@@ -174,6 +178,7 @@ public class ShiroConfig {
 	 * 
 	 * @return
 	 */
+	// [注]:似乎是做redis缓存shiro session, 用于sessionManager()
 	public SessionDAO redisSessionDao() {
 		// 使用构造的方式
 		ShiroRedisSessionDao sessionDao = new ShiroRedisSessionDao(sessionExpireTime, jedisPool);
@@ -191,7 +196,7 @@ public class ShiroConfig {
 	public SessionManager sessionManager() {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setSessionDAO(redisSessionDao());
-		// session过期时间
+		// [注]:设置session过期时间,其他项目没看到
 		sessionManager.setGlobalSessionTimeout(sessionExpireTime);
 		// session过期删除
 		sessionManager.setDeleteInvalidSessions(true);
@@ -206,6 +211,7 @@ public class ShiroConfig {
 	 * 
 	 * @return
 	 */
+	// [注]:ShiroRedisCacheManager是自己写的, implements CacheManager, 用于securityManager()
 	@Bean
 	public ShiroRedisCacheManager shiroRedisCacheManager() {
 		return new ShiroRedisCacheManager(cacheExpireTime, jedisPool);
@@ -247,6 +253,7 @@ public class ShiroConfig {
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 1.设置自定义的Realm
+		// [注]:在x-springboot的ShiroConfig里,就直接securityManager.setRealm(oAuth2Realm)了, oAuth2Realm是参数
 		securityManager.setRealm(myShiroRealm());
 
 		// 2.配置SessionManager

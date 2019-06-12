@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Configuration
 public class RabbitMqConfig{
 
+	// [注]:直接用Value读配置文件里的东西
 	@Value("${spring.rabbitmq.addresses}")
 	private String addresses;
 
@@ -66,6 +67,7 @@ public class RabbitMqConfig{
 	 * 定义转换器为json
 	 * @return
 	 */
+	// [注]:配置转换器,和seckill里的MQConfig一样
 	@Bean
 	public MessageConverter jsonMessageConverter() {
 		return new Jackson2JsonMessageConverter(objectMapper());

@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @ServletComponentScan 为了扫描在common文件夹下定义的filter
  * @EnableTransactionManagement 开启事物
  */
+// [注]:引入rabbitMQ,引入事务注解,引入@ServletComponentScan注解后，Servlet、Filter、Listener可以直接通过@WebServlet、@WebFilter、@WebListener注解自动注册，无需其他代码
+// [注]:可能是不需要类似x-springboot里的FilterConfig?最后引入druid配置
 @EnableRabbit
 @SpringBootApplication
 @EnableTransactionManagement

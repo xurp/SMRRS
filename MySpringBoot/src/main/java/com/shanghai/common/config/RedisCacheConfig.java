@@ -43,6 +43,7 @@ public class RedisCacheConfig {
 	@Value("${data.redis.cache.expireTime}")
 	private int cacheExpireTime;
 
+	// [注]:这个方法给下面方法用的, 做序列化和反序列化redis的value值
 	@Bean
 	public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
 		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
@@ -63,6 +64,7 @@ public class RedisCacheConfig {
 	 * @param resourceLoader
 	 * @return
 	 */
+	// [注]:进行缓存配置
 	@Bean
 	public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory,
 			ResourceLoader resourceLoader) {
@@ -72,9 +74,9 @@ public class RedisCacheConfig {
 				.entryTtl(Duration.ofSeconds(cacheExpireTime))
 				// 过滤空值
 				.disableCachingNullValues()
-				// 设置key的序列化方式
+				// [注]:设置key的序列化方式--String
 				.serializeKeysWith( SerializationPair.fromSerializer(new StringRedisSerializer()))
-				// 设置value 序列化方式
+				// [注]:设置value的序列化方式--jackson2
 				.serializeValuesWith(SerializationPair.fromSerializer(jackson2JsonRedisSerializer()));
 
 		RedisCacheManagerBuilder builder = RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(config);

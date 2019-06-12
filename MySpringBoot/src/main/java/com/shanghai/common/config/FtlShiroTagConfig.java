@@ -21,7 +21,7 @@ public class FtlShiroTagConfig implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//可以在页面上使用shiro标签
+		// [注]:这样可以在页面上使用shiro标签,例如有xxx角色的人员才可以看到"保存"按钮:<@shiro.hasAnyRoles name="app_${xxx.id?c}_1,app_${xxx.id?c}_2">...
 		configuration.setSharedVariable("shiro", new ShiroTags());
 	}
 
