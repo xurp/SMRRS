@@ -39,11 +39,13 @@ public class MyShiroRealm extends AuthorizingRealm {
 	private final static String DOT = ",";
 	
 	/**
-	 * 登录：在登录的时候需要将数据封装到Shiro的一个token中，执行shiro的login()方法，之后只要我们将SystemAuthorizingRealm这个类配置到Spring中，登录的时候Shiro就会自动的调用doGetAuthenticationInfo()方法进行验证。
+	 * 登录：在登录的时候需要将数据封装到Shiro的一个token中，执行shiro的login()方法，之后只要我们将SystemAuthorizingRealm这个类配置到Spring中，
+	 * 登录的时候Shiro就会自动的调用doGetAuthenticationInfo()方法进行验证。
 	 * 验证当前登录的Subject
-	 * 这里从数据库获取权限信息时,先去访问Spring3.1提供的缓存,而不使用Shior提供的AuthorizationCache 执行时机： Subject
+	 * 这里从数据库获取权限信息时,先去访问Spring3.1提供的缓存,而不使用Shiro提供的AuthorizationCache 执行时机： Subject
 	 * currentUser = SecurityUtils.getSubject(); currentUser.login(token);
 	 */
+	// [注]:本类经过重写,似乎为了返回一个SimpleAuthenticationInfo,和用户信息有关.参考x-springboot的OAuth2Realm
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
@@ -92,7 +94,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		}
 
 		// 5. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为:
-		// SimpleAuthenticationInfo; 密码的比对是由shiro完成
+		// SimpleAuthenticationInfo; 密码的比对是由shiro完成.其参数是:
 		// 1). principal: 认证的实体信息. 可以是 username, 也可以是数据表对应的用户的实体类对象.
 		// 2). credentials: 数据库获取的用户密码.
 		// 3). 盐值.
@@ -110,6 +112,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 	 * 2、@RequiresRoles("admin") ：在方法上加注解的时候；
 	 * 3、[@shiro.hasPermission name ="admin"][/@shiro.hasPermission]：在页面上加shiro标签的时候，即进这个页面的时候扫描到有这个标签的时候。
 	 */
+	// [注]:本方法也是返回一个SimpleAuthorizationInfo,似乎是给这个对象加了允许的用户角色权限信息.对应x-springboot的OAuth2Realm
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		logger.info("Shiro权限认证...");

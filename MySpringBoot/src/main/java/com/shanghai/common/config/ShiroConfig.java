@@ -253,7 +253,8 @@ public class ShiroConfig {
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 1.设置自定义的Realm
-		// [注]:在x-springboot的ShiroConfig里,就直接securityManager.setRealm(oAuth2Realm)了, oAuth2Realm是参数
+		// [注]:在x-springboot的ShiroConfig里,是OAuth2Realm extends AuthorizingRealm,然后securityManager.setRealm(oAuth2Realm)了, oAuth2Realm是参数
+		// [注]:OAuth2Realm比本项目的MyShiroRealm简单些
 		securityManager.setRealm(myShiroRealm());
 
 		// 2.配置SessionManager

@@ -48,9 +48,12 @@ public class UserServiceImpl implements UserService {
 		return new PageInfo<>(userDao.findList(user));
 	}
 
+	// [注]:如果try catch了,那事务不回滚,除非在catch里throw了. 事务默认遇到IOException这种必须try catch的不会回滚
+	// [注]:加了rollbackFor = Exception.class后,IOException也能回滚
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public Integer saveUser(User user) throws IOException {
+		// [注]:用户输入的密码需要加密保存
 		String newPassword = UserUtil.encryptPassword(user.getUsername(), user.getPassword());
 		user.setPassword(newPassword);
 		// 保存到db中
@@ -70,6 +73,7 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(newPassword);
 		}
 		Integer result = userDao.update(user);
+		// [注]:更新用户后需要修改用户的权限关系表
 		//删除原有的用户角色关联关系
 		userDao.deleteUserRole(user);
 		if (user.getRoleIds() != null && user.getRoleIds().size() > 0) {

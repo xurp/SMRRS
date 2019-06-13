@@ -17,6 +17,8 @@
 		<result property="status" column="status" />
 		
         <!-- 查询子模块collection：查询集合 -->  
+        <!-- [注]:menus是Role里的一个List<Menu>,即权限与menu算是多对多(看上去像一对多,因为Role里有menus,Menu里没有roles) 
+        property:集合变量的名字 ofType:集合元素类型 column:估计是用在select里的参数 select:该集合的值怎么查找出来,就是下面的<select id="getMenuIds" ... -->
         <collection property="menus" column="{id=id, isAdmin=isAdmin}" ofType="Menu" select="getMenuIds" />
         
 	</resultMap>

@@ -22,12 +22,14 @@ public class RabbitMqSender implements ConfirmCallback{
 	
 	private RabbitTemplate rabbitTemplate;
 	
+	// [注]:这里的setConfirmCallback是配合下面的confirm ack(即发送失败把消息放回队列重发)
 	@Autowired
     public RabbitMqSender(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
         this.rabbitTemplate.setConfirmCallback(this);
     }
 	
+	// [注]:这里的ack需要两个Consumer类配合
 	@Override
 	public void confirm(CorrelationData correlationData, boolean ack, String cause) {
 		if (ack) {

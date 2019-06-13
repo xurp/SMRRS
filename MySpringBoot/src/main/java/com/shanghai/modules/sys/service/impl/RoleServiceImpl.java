@@ -37,6 +37,11 @@ public class RoleServiceImpl implements RoleService{
 		return new PageInfo<>(roleDao.findList(role));
 	}
 	
+	/**
+	 * 查询所有的角色
+	 * @param role
+	 * @return
+	 */
 	@Override
 	public List<Role> findAllList(Role role) {
 		return roleDao.findList(role);
@@ -98,6 +103,10 @@ public class RoleServiceImpl implements RoleService{
 		return false;
 	}
 
+	/**
+	 * 更新角色权限菜单
+	 * @param role
+	 */
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void authSave(Role role) {

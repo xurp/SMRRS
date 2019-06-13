@@ -41,6 +41,7 @@ public class User implements Serializable{
 	/**
 	 * 电话
 	 */
+	// [注]:加了注解
 	@Length(max=11)
 	@IsMobile
 	private String phone;
@@ -167,6 +168,7 @@ public class User implements Serializable{
 	 * 该用户是否有管理员角色
 	 * @return
 	 */
+	// [注]:这里用了jsonignore,可能是因为本方法只是一个"工具方法"
 	@JsonIgnore
 	public Boolean isAdmin() {
 		for (Role role : roles) {

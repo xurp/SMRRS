@@ -113,12 +113,14 @@ public class Role implements Serializable{
 	 * 这两个方法供页面 ${role.menuIds} 调用
 	 * @return
 	 */
+	// [注]:这个方法在roleAuth.ftl里用
 	@JsonIgnore
 	public String getMenuIds() {
 		List<Integer> menuIdList = new ArrayList<Integer>();
 		for (Menu menu : menus) {
 			menuIdList.add(menu.getId());
 		}
+		// [注]:join方法估计是把list的元素用,连接为一个String
 		return StringUtils.join(menuIdList, ",");
 	}
 	

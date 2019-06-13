@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shanghai.modules.sys.dao.UserDao">
-	
+	<!-- [注]:常用的select *** 用作调用 -->
 	<sql id="userColumn" >
     	id AS id, 
     	username AS username, 
@@ -65,6 +65,7 @@
 	</select>
 
 	<!-- 插入用户 -->
+	<!-- [注]:insert的参数是User,指定生成key -->
 	<insert id="insert"  parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO sys_user(
 			username,
@@ -107,6 +108,7 @@
 	</delete>
 	
 	<!-- 插入用户和角色关联表数据 -->
+	<!-- [注]:insertUserRole的参数是User, 使用foreach遍历user.getRoleIds(), maybatis里批量插入,SELECT ** FROM dual union all SELECT ** FROM dual ...... -->
 	<insert id="insertUserRole">
 		INSERT INTO sys_user_role(user_id, role_id)
 		<foreach collection="roleIds" item="roleId" separator=" union all ">

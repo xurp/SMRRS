@@ -12,6 +12,36 @@ resource：
     RabbitMqPublisherConfig配置交换机之类的东西(和前一个文件可能能合并). RedisCacheConfig读取了配置里的缓存过期时间,做缓存配置和k-v序列化配置. RedisJedisConfig读配置,把池做出来.
     WebMvcConfig一般主要配置拦截器和其他springboot配置,这里做了默认路径跳转至login和跨域配置(和x-springboot的WebMvcConfig一样). ShiroConfig比x-springboot的略复杂些,
           比如remember me 
+2. filter包. DruidWebStatFilter用来监控,拦截所有,但一些resource的东西不拦截
+3. handler包. DateConverterHandler是一个全局的string转date的转换器,但好像应该在WebMvcConfig注册的,这里没注册. ErrorExceptionHandler是全局异常处理的AOP,
+    用@ExceptionHandler({ LoginException.class })一个方法一个方法拦截,然后直接用model返回给前端
+4. persistence包. BaseController基类, 注入HttpServletRequest request和一些page处理.
+5. rabbitmq包. RabbitMqEnum定义了一些交换机的code和name对应关系, RabbitMqSender用来发送, RabbitMqConsumerEmail和RabbitMqConsumerTip分别对应EMAILNOTIFY和SYSTEMNOTIFY的队列监听.
+    上面两个类配合send里的ack,具体可以看https://www.jianshu.com/p/4112d78a8753
+6. redis包. JedisUtils取jedisPool,做CRUD.作者认为当然也可以使用spring boot 提供的RedisTemplate工具类
+7. rediskey包. KeyPrefix是BasePrefix的接口, 最主要的是给redis key加一个className:prefix的前缀防止重复了
+8. servlet包. DruidStatViewServlet是一个druid连接池监控Servlet
+9. shiro包. MyUsernamePasswordToken是extends UsernamePasswordToken的,在shiro类基础上加了一个验证码属性. MyShiroRealm是extends AuthorizingRealm的,主要是返回用户信息和权限信息
+    和x-springboot的OAuth2Realm一样.ShiroRedisCacheManager似乎是管理shiro redis过期时间的,ShiroRedisSessionDao似乎是redis实现session共享. ShiroRedisCache似乎是redis 实现cache共享
+    以上三个类应该是Shiro默认整合了EhCache，来实现缓存，现在用redis替换EhCache来实现缓存,并且实现session由shiro托管.可能的解释大致如下:
+           应用如果做负载均衡，集群间session需要共享，如果session没有共享，用户登录系统以后session保存在登录的应用里面，其他应用里面没有session，没有登陆状态，访问会失败。
+           下面介绍一个SpringBoot下面基于Shiro的session共享方案--使用Shiro托管应用session,使用Redis管理Shiro缓存
+    1)设置项目缓存为Redis，这样Spring项目的缓存就都会存在Redis
+    2)设置应用session由Shiro托管
+    3)实现Shiro的缓存管理器CacheManger接口，将Spring应用缓存管理器注入shiro缓存管理器，这样shiro的缓存都由Spring处理
+    4)实现Shiro的Cache接口，将Spring的缓存工具类注入，使Shiro对缓存信息的存取由Spring的缓存实现
+    5)实现Shiro的EnterpriseCacheSessionDAO类，重写Shiro对于session的CRUD，使用重写的Shiro的Cache接口，对session的CRUD在Redis中处理
+    反正大致就这个意思. x-springboot里的shiro没用这些,照样OK.不用纠结.
+10. tag包. MenuTag手动写menu html,获取用户信息后查询数据库可以显示什么菜单
+11. utils包. CodeMsg是封装的错误代码对应信息,PageInfo封装了pageHelp这个工具,RandomValidateCodeUtil手动写验证码,Reflections是一个反射工具类,只在ExportExcel使用.Result统一返回对象
+    SpringContextHolder提供静态方法获取ApplicationContext中的所有bean.UserUtil封装一些常用的user查询方法
+12. excel包. 暂时没看
+13. exception包. 自定义异常类
+14. keyutils包. 只有一个类,SysModules extends BasePrefix
+15. validator包. IsMobile是注解接口,IsMobileValidator实现ConstraintValidator做具体判断
+16. dao包,entity包. 配合三个mapping xml
+17. service(Impl)包. user,menu,role的关系
+18. web包. 就是controller.
     
 
 

@@ -168,6 +168,7 @@ public class Menu implements Serializable{
 	 * @param parentId
 	 * @param cascade
 	 */
+	// [注]:也算Menu的一个"工具类",所以加了@JsonIgnore
 	@JsonIgnore
 	public static void sortList(List<Menu> list, List<Menu> sourceList, Integer parentId){
 		for (int i = 0; i < sourceList.size(); i++){

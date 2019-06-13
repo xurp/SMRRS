@@ -22,7 +22,13 @@ public class MenuServiceImpl implements MenuService {
 	@Autowired
 	private MenuDao menuDao;
 	
-	
+	/**
+	 * 获取用户对应的显示的菜单列表
+	 * @param userId
+	 * @param isAdmin
+	 * @param isShow  null:所有菜单， 0：隐藏的菜单， 1：显示的菜单
+	 * @return
+	 */
 	@Override
 	public List<Menu> getUserMenuList(Integer userId, Boolean isAdmin, Integer isShow) {
 		List<Menu> menus = new ArrayList<Menu>();
