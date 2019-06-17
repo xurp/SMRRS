@@ -33,6 +33,7 @@ public class MenuController extends BaseController{
 	 * @param model
 	 * @return
 	 */
+	// [注]:这里的permissions应该和x-springboot的一样
 	@RequestMapping(value = "list")
 	@RequiresPermissions(value="sys:list:menu")
 	public String list(Menu menu, Model model) {
@@ -47,6 +48,7 @@ public class MenuController extends BaseController{
 	 * @param model
 	 * @return
 	 */
+	// [注]:logical=Logical.OR应该是只要满足一个权限就行
 	@RequestMapping(value = "form")
 	@RequiresPermissions(value= {"sys:add:menu", "sys:view:menu", "sys:edit:menu"}, logical=Logical.OR)
 	public String form(Menu menu, Model model) {
@@ -68,14 +70,17 @@ public class MenuController extends BaseController{
 	 * @param redirectAttributes
 	 * @return
 	 */
+	// [注]:RedirectAttributes一般配合最后的redirect使用,保存参数再跳转
 	@RequestMapping(value = "save")
 	@RequiresPermissions(value= {"sys:add:menu", "sys:edit:menu"}, logical=Logical.OR)
 	public String save(Menu menu, RedirectAttributes redirectAttributes) {
+		// [注]:根据id是否存在,在一个方法里做C和U
 		if (menu.getId() == null) {
 			menuService.saveMenu(menu);
 		} else {
 			menuService.updateMenu(menu);
 		}
+		// [注]:addFlashAttribute只能让页面的el表达式获取值,可能去了另一个Controller的方法里是没法获取的,需要参考https://www.cnblogs.com/zhujiabin/p/4935557.html
 		redirectAttributes.addFlashAttribute("msg", SysConstants.OPERATE_SUCCESS_PAGE_TIP);
 		return "redirect:/sys/menu/list";
 	}

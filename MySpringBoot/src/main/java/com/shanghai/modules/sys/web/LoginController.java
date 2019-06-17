@@ -49,6 +49,7 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
+	// [注]:本方法应该是ErrorExceptionHandler拦截登录异常以及WebMvcConfig里访问http://localhost:8081/ 时直接跳转到http://localhost:8081/login时走的地方
 	@RequestMapping(value = "/login")
 	public String login(Model model) {
 		logger.info("开始登入：{}", Flag);
@@ -74,6 +75,7 @@ public class LoginController {
 	 * @param rememberMe
 	 * @return
 	 */
+	// [注]:前端点登录了就来这里
 	@RequestMapping(value = "/authorize")
 	public String login(String username, String password, Boolean rememberMe, String validateCode) {
 		logger.info("登入校验：{}", Flag);
@@ -92,6 +94,7 @@ public class LoginController {
 			rememberMe = false;
 		}
 
+		// [注]:这里进行shiro的登录,在x-springboot里似乎用的是自己查找数据库的方式
 		MyUsernamePasswordToken usernamePasswordToken = new MyUsernamePasswordToken(username, password, rememberMe, validateCode);
 		// 进行验证，捕获异常
 		try {
@@ -139,10 +142,12 @@ public class LoginController {
 	public String index() {
 		logger.info("进入首页：{}", Flag);
 		Subject subject = SecurityUtils.getSubject();
+		// [注]:获取登录名
 		String name = subject.getPrincipal().toString();
 		Session session = subject.getSession();
 		session.setAttribute("loginName", name);
 		User user = userService.getByLoginName(name);
+		// [注]:这里的mq应该是打印不急的日志,在Consumer里打印
 		rabbitMqSender.sendRabbitMqFanout(RabbitMqEnum.RoutingKeyEnum.SYSTEMTIPKEY.getCode(), user);
 		return "modules/index";
 	}
@@ -151,6 +156,7 @@ public class LoginController {
 	 * 权限不足
 	 * @return
 	 */
+	// [注]:ShiroConfig里的shirFilter:shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 	@RequestMapping(value = "/403")
 	public String unAuthorize() {
 		return "error/403";

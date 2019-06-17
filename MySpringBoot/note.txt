@@ -41,7 +41,9 @@ resource：
 15. validator包. IsMobile是注解接口,IsMobileValidator实现ConstraintValidator做具体判断
 16. dao包,entity包. 配合三个mapping xml
 17. service(Impl)包. user,menu,role的关系
-18. web包. 就是controller.
+18. web包. 就是controller. BaseErrorController继承spring里的ErrorController,防止在没有抛出异常的情况下出现 Whitelabel Error Page. 剩下的就是中规中矩的
+
+前台:暂略
     
 
 

@@ -59,6 +59,7 @@ public class UserController extends BaseController{
 	 * @param model
 	 * @return
 	 */
+	// [注]:估计这个方法是打开添加/编辑Role的表单页,没仔细看
 	@RequestMapping(value = "form")
 	@RequiresPermissions(value= {"sys:add:user", "sys:view:user", "sys:edit:user"}, logical=Logical.OR)
 	public String form(User user, Model model) {
@@ -68,6 +69,7 @@ public class UserController extends BaseController{
 			model.addAttribute("allRoles", roleService.findUserAllRole(user.getId()));
 		} else {
 			Role role = new Role();
+			// [注]: 1-可用
 			role.setStatus(1);
 			model.addAttribute("allRoles", roleService.findAllList(role));
 		}

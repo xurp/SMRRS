@@ -61,6 +61,7 @@ public class UploadController {
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
+	// [注]使用的是MultipartFile上传
 	@ResponseBody
 	@RequestMapping(value = "upload")
 	public String upload(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
